@@ -1,0 +1,13 @@
+<h2>All songs</h2>
+<% @songs.each do |s| %>
+	<audio controls>
+		<source src="<%= s.songs.url%>" type="audio/mp3">
+	</audio>
+	<%= form_tag( incrementLike_path, method: :put) do %>
+		<%= hidden_field_tag(:user_id, session[:user]["id"]) %>
+		<%= hidden_field_tag(:song_id, s.id) %>
+		<%= submit_tag(:Like) %>
+	<% end %>
+	<%= s.like %>
+		<br>
+<% end %>

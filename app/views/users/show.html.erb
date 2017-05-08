@@ -1,0 +1,77 @@
+<div class="row">
+	<div class="col s2">
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row">
+			<div class="col s12 offset-s2">
+				<img src="<%= @user.profile_picture.url%> " class = "profile-picture">
+			</div>
+		</div>
+		<div class="row">
+			<div class="center-align">
+				<span><%= @user.name %></span>
+			</div>
+		</div>
+
+	</div>
+	<div class="col s8">
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row">
+		    <div class="col s12 m6">
+	          <div class="card">
+	            <div class="card-image">
+	              <img src="images/onair.jpg">
+	              <span class="card-title white-text">GO ONLINE</span>
+	            </div>
+	            <div class="card-content">
+	              <p>I am a very simple card. I am good at containing small bits of information.
+	              I am convenient because I require little markup to use effectively.</p>
+	            </div>
+	            <div class="card-action">
+	              <a href="#">GO ONLINE</a>
+	            </div>
+	          </div>
+	        </div>
+
+
+	        <div class="card">
+	            <div class="card-image">
+	              <img src="images/random.jpg">
+	              <span class="card-title white-text">GO ONLINE</span>
+	            </div>
+	            <div class="card-content">
+	              <p>I am a very simple card. I am good at containing small bits of information.
+	              I am convenient because I require little markup to use effectively.</p>
+	            </div>
+	            <div class="card-action">
+	              <a href="#">GO ONLINE</a>
+	            </div>
+	          </div>
+	        </div>
+
+			
+		</div>
+
+
+	</div>
+     <div class="col s2">
+     	<%= form_tag({controller: :audio, action: :search}, method: "get") do %>
+			<div class="row">
+					<br><br>
+					<div class="col s1">
+						<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+					</div>
+					<div class="col s10">
+						<%= text_field_tag(:content, nil, placeholder: "Search by name, artist, album...(comma seperated)")%>
+						<%= hidden_field_tag(:flag, true) %>
+					</div>
+					<div class="col s1">
+						<%= submit_tag(:Search, :class => "waves-effect waves-light btn") %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+

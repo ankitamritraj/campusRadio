@@ -1,0 +1,193 @@
+<div class="row ">
+	 <div class="slider fullscreen">
+	    <ul class="slides">
+	      <li>
+	        <img src="images/card1.png"> <!-- random image -->
+	        <div class="caption center-align">
+	          <h3>This is our big Tagline!</h3>
+	          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+	        </div>
+	      </li>
+	      <li>
+	        <img src="images/card2.jpg"> <!-- random image -->
+	        <div class="caption left-align">
+	          <h3>Left Aligned Caption</h3>
+	          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+	        </div>
+	      </li>
+	      <li>
+	        <img src="images/card3.png"> <!-- random image -->
+	        <div class="caption right-align">
+	          <h3>Right Aligned Caption</h3>
+	          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+	        </div>
+	      </li>
+	      <li>
+	        <img src="images/card4.jpg"> <!-- random image -->
+	        <div class="caption center-align">
+	          <h3>This is our big Tagline!</h3>
+	          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+	        </div>
+	      </li>
+	    </ul>
+    </div>
+</div>
+<div class="row", style="margin-top: 50%;">
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="images/card1.png">
+          <span class="card-title">RADIO STATION</span>
+        </div>
+        <div class="card-content">
+          <p>This week's top streamed radio songs and on-demand songs and videos on leading online music services.</p>
+        </div>
+        <div class="card-action">
+          <a href="#" class=" red darken-1 text-white waves-effect waves-light btn">LISTEN NOW</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="images/card2.jpg">
+          <span class="card-title">UPCOMING EVENTS</span>
+        </div>
+        <div class="card-content">
+          <p>View all the upcoming events</p>
+        </div>
+        <div class="card-action">
+          <a href="#" class=" blue darken-3 text-white waves-effect waves-light btn">VIEW</a>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="images/card3.png">
+          <span class="card-title">ONLINE BROADCASTING</span>
+        </div>
+        <div class="card-content">
+          <p>Do online broadcasting</p>
+        </div>
+        <div class="card-action">
+          <a href="#" class=" grey darken-1 text-white waves-effect waves-light btn">START NOW</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="images/card4.jpg">
+          <span class="card-title">SEARCH</span>
+        </div>
+        <div class="card-content">
+          <p>Search form millions of songs by artist name, song name or by album.</p>
+        </div>
+        <div class="card-action">
+          <%= link_to "SEARCH", {controller: :audio, action: :search, flag: false}, :class => " brown text-white waves-effect waves-light btn" %>
+        </div>
+      </div>
+    </div>
+
+</div>
+<% if logged_in? %>
+	<h3>All songs</h3>
+	<br><br>
+	<div class="start-playlist">
+		<span>PLAY NOW</span>
+		<br><br>
+
+		<% count = 1 %>
+		<% @songs.each do |s| %>
+			<div>
+				<div class = "row">
+					<div class = "col s4">
+						<%= s.name %>	
+						
+					</div>
+					<div class = "col s8">
+						<div class = "audio-play-main-playlist">
+							<span class="btn btn-primary audioButton song-count-<%= count %> ", id = "<%= s.songs.url%>">Play</span>
+						</div>
+
+						<%= link_to "Like", {controller: :audio, action: :incrementLike, id: { :song_id => s.id, :user_id => session["user"]["id"] } }, method: :post %>
+						<%= s[:like]%>
+						<br>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			<% count = count + 1 %>
+		<% end %>
+	</div>
+<% end %>
+
+<script>
+
+	$(document).ready(function() {
+	    var audioElement = document.createElement('audio');
+	    var idx = 1;
+	    var content = $(".song-count-" + idx).attr("id");
+	    audioElement.setAttribute('src', content);
+	    audioElement.currentTime = 0;
+		console.log(content);
+			    
+	    audioElement.addEventListener('ended', function() {
+	    	idx++;
+	    	content = $(".song-count-" + idx).attr("id");
+			console.log(content);
+		    audioElement.setAttribute('src', content);
+		    audioElement.currentTime = 0;
+	        this.play();
+	    }, false);
+	    
+	    audioElement.addEventListener("timeupdate",function(){
+	        $("#currentTime").text("Current second:" + audioElement.currentTime);
+	    });
+	    
+	    $('#play').click(function() {
+	        audioElement.play();
+	        $("#status").text("Status: Playing");
+	    });
+	    
+	    $('#pause').click(function() {
+	        audioElement.pause();
+	        $("#status").text("Status: Paused");
+	    });
+	    
+	    $('#restart').click(function() {
+	        audioElement.currentTime = 0;
+	    });
+	});
+
+</script>
+
+<h2>Sound Information</h2>
+    <div id="length">Duration:</div>
+    <div id="source">Source:</div>
+    <div id="status" style="color:red;">Status: Loading</div>
+    <hr>
+    <h2>Control Buttons</h2>
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+    <button id="restart">Restart</button>
+    <hr>
+    <h2>Playing Information</h2>
+    <div id="currentTime">0</div>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.slider').slider({full_width: true});
+        });
+    </script> 
+

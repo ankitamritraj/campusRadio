@@ -1,0 +1,71 @@
+
+<div class="row">
+	<div class="col s2">
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row">
+			<div class="col s12 offset-s2">
+				<img src="<%= @user.profile_picture.url%> " class = "profile-picture">
+			</div>
+		</div>
+		<div class="row">
+			<div class="center-align">
+				<span><%= @user.name %></span>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col s8">
+		<%= form_tag({controller: :audio, action: :search}, method: "get") do %>
+			<div class="row">
+				<div class="col s6 offset-s2">
+					<div class="row"></div>
+					<div class="row"></div>
+					<div class="row"></div>
+					<div class="row">
+						<div class="col s1">
+							<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+						</div>
+						<div class="col s10">
+							<%= text_field_tag(:content, nil, placeholder: "Search by name, artist, album...(comma seperated)")%>
+							<%= hidden_field_tag(:flag, true) %>
+						</div>
+						<div class="col s1">
+							<%= submit_tag(:Search, :class => "waves-effect waves-light btn") %>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<% if @songs %>
+			<% @songs.each do |s| %>
+
+				<ul class="collection">
+				    <li class="collection-item avatar">
+				      <i class="material-icons circle red">play_arrow</i>
+				      <span class="title"><%=s.name %></span>
+				      <p><%=s.artist %><br>
+				         <%=s.album %>
+				      </p>
+				      <%= form_tag( incrementLike_path, method: :put) do %>
+						<%= hidden_field_tag(:user_id, session[:user]["id"]) %>
+						<%= hidden_field_tag(:song_id, s.id) %>
+						<%= submit_tag(:Like) %>
+					  <% end %>
+				      <a href="/incrementLike" class="secondary-content", method = "put"><i class="material-icons">grade</i></a>
+						<audio controls>
+							<source src="<%= s.songs.url%>" type="audio/mp3">
+							<%= link_to "Like", incrementLike_path, method: :post %>
+							<span>Like : <%= s[:like]%></span>
+						</audio>
+				    </li>
+			    </ul>
+				<br>
+			<% end %>
+		<% end %>
+	</div>
+     <div class="col s2">
+     </div>
+</div>

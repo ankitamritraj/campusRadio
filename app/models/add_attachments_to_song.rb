@@ -1,0 +1,2 @@
+class AddAttachmentsToSong < ApplicationRecord
+end
